@@ -1,8 +1,11 @@
 module.exports = function check(str, bracketsConfig) {
-  // your solution
   let stack = [];
   let OPEN_BRACKETS = [];
-  let BRACKETS_PAIR = {};
+  let BRACKETS_PAIR = {
+    '(' : '',
+    '{' : '',
+    '[' : '',
+  };
 
   for (let i = 0; i < bracketsConfig.length; i++) {
     OPEN_BRACKETS.push(bracketsConfig[i][0]);
@@ -12,20 +15,17 @@ module.exports = function check(str, bracketsConfig) {
   for (let i = 0; i < str.length; i++) {
     let currentSymbol = str[i];
     let lastBracket = stack[stack.length - 1];
-    
-    if (OPEN_BRACKETS.includes(currentSymbol) && currentSymbol !== '') {
-      stack.push(currentSymbol);
-    } else {
-      if (stack.length === 0) {
-        return false;
-      }
 
-      if (BRACKETS_PAIR[currentSymbol] === lastBracket) {
-        stack.pop();
-      } else {
-        return false;
-      }
+    if(str.length % 2 !== 0) {
+      return false;
     }
-  } 
+
+    if (lastBracket === BRACKETS_PAIR[currentSymbol]) {
+      stack.pop();
+    } else if(OPEN_BRACKETS.includes(currentSymbol)) {
+      stack.push(currentSymbol);
+    }
+  }
+
   return stack.length === 0;
 }
